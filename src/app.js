@@ -12,14 +12,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+
 app.use('/', IndexRouter);
 app.use('/auth', AuthRouter);
-app.use('/users', UserRouter);
+app.use('/user', UserRouter);
 
 app.use(async (req, res, next) => {
     next(createError.NotFound());
 });
-
 app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.send({
